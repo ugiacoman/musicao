@@ -9,10 +9,14 @@
 # Content-Type: application/x-www-form-urlencoded
 # Content-Length: 6044
 import string
-import mechanize
 import requests
 from bs4 import BeautifulSoup
 import re
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
+import time
+
 # lyrics url and parses it
 
 # rest = str(input('Please input song: '))
@@ -20,7 +24,7 @@ import re
 # br.addheaders = [('User-agent', 'Mozilla/5.0')]
 # br.set_handle_robots(False)
 
-string = str(raw_input('Please input a song: '))
+string = str(raw_input("Please input song: "))
 parsed = ''
 for char in string:
 	if char == ' ':
@@ -43,64 +47,47 @@ sep = 'html'
 hello = blurURL.split(sep)[0]
 url = hello + 'html'
 
+r = requests.get(url)
+soup = BeautifulSoup(r.content)
+divs = soup.find_all("div")
+div_list = []
+for div in divs:
+    div_list.append(div)
+lyrics = div_list[6]    
 
-# url = "http://www.azlyrics.com/lyrics/kendricklamar/therecipe.html"
-# r = requests.get(url)
-# soup = BeautifulSoup(r.content)
-# divs = soup.find_all("div")
-# div_list = []
-# for div in divs:
-#     div_list.append(div)
-# lyrics = div_list[6]    
-
-# text = str(lyrics)
-
-# dcap = dict(DesiredCapabilities.FIREFOX)
-# dcap["phantomsjs.page.settings.userAgent"] = (
-#     "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.137 Safari/537.36"
-
-#     )
-
-# driver = webdriver.Firefox()
-# driver.set_window_size(1280, 1024) # set browser size.
-# driver.get('http://www.freesummarizer.com') # Load page
+text = str(lyrics)
 
 
+driver = webdriver.PhantomJS()
+driver.set_window_size(1280, 1024) # set browser size.
+driver.get('http://www.freesummarizer.com') # Load page
+summarize_box = driver.find_element_by_xpath('//*[@id="summarizebutton"]/i')
+time.sleep(1)
+summarize_box.click()
+#driver.save_screenshot('github.png')
 
-# summarize_box = driver.find_element_by_xpath('//*[@id="summarizebutton"]/i')
-# summarize_box.click()
-# #driver.save_screenshot('screen.png')
+text_box = driver.find_element_by_xpath('//*[@id="text"]')
+time.sleep(1)
+text_box.clear()
+text_box.send_keys(text)
+time.sleep(1)
+text_box.send_keys(Keys.ESCAPE)
+
+m_sentences = driver.find_element_by_xpath('//*[@id="summarizecontainer"]/div/div/form/div/input[2]')
+# time.sleep(5)
+m_sentences.clear()
+# time.sleep(5)
+m_sentences.send_keys('1')
+
+email = driver.find_element_by_xpath('//*[@id="summarizecontainer"]/div/div/form/div/input[3]')
+# time.sleep(5)
+email.send_keys('ulises.giacoman@gmail.com')
+
+submit = driver.find_element_by_xpath('//*[@id="summarizecontainer"]/div/div/form/div/div/input')
+submit.click()
+time.sleep(1)
+
+summary2 = driver.find_element_by_class_name('summary2').text
+print(summary2)
 
 
-# text_box = driver.find_element_by_xpath('//*[@id="text"]')
-# delete = (Keys.CONTROL, "a")
-# text_box.send_keys(delete)
-# text_box.send_keys(Keys.DELETE)
-# text_box.send_keys(text)
-
-# m_sentences = driver.find_element_by_xpath('//*[@id="summarizecontainer"]/div/div/form/div/input[2]')
-# m_sentences.send_keys(send_keys + '1')
-
-
-# email = driver.find_element_by_xpath('//*[@id="summarizecontainer"]/div/div/form/div/input[3]')
-# email.send_keys(send_keys + 'ulises.giacoman@gmail.com')
-
-# submit = driver.find_element_by_xpath('//*[@id="summarizecontainer"]/div/div/form/div/div/input')
-# submit.click()
-
-
-# browser.find_element_by_id("summarizebutton").click()
-# # browser.scroll(0,500)
-# #username.clear()
-# username.send_keys(text)
-
-# password = browser.find_element_by_name('maxsentences')
-# #password.clear()
-# password.send_keys('1')
-
-# password = browser.find_element_by_name('email')
-# #password.clear()
-# password.send_keys('ulises.giacoman@gmail.com')
-
-# browser.find_element_by_name("submit").click()
-# browser.close()
