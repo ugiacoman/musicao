@@ -13,7 +13,6 @@
 
     <link rel="shortcut icon" href="../static/media/Flat-UI/dist/img/favicon.ico">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
   </head>
 
    <style>
@@ -34,17 +33,19 @@
         left: 6%;
       }
       #title {
-        text-align: left;
+        text-align: center;
         color: #fff;
         background-color: rgba(0,0,0,0);
-        font-family: "Lato",Helvetica,Arial,sans-serif;
+        font-family: serif;
         font-weight: 300;
         font-size: 150%;
+        margin-top: 2%;
+
       }
       #result {
         color: #fff;
         background-color: rgba(0,0,0,0);
-        font-family: "Lato",Helvetica,Arial,sans-serif;
+        font-family: serif;
         font-weight: 300;
         font-size: 150%;
 
@@ -80,6 +81,9 @@
         display: block;
         margin: 0 auto;
         border: 0;
+        margin-top: 2%;
+        background:rgba(255,255,255, 0.1);
+        color: #fffff; 
       }
 
       #submit {
@@ -89,6 +93,7 @@
         border: 0;
         margin-top: 2%;
       }
+
       /*Animated Blinker */
       @keyframes blink{
           0% { opacity:1; }
@@ -108,37 +113,29 @@
     </style>
 
   <body>
-
     <!-- Logo -->
     <!-- <a href="/"><img id="logo" src="../static/graphics/white_logo.png" /></a> -->
      <div class="container">
+     
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
+      <p id="title">SumThisToMe summarizes a songs such as <span class="options"></span></p>
         <div class="form-group">
-          <p id="title">SumThisToMe summarizes a songs such as <span class="options"></span></p>
-            <form action="." method="POST" target="formDestination">
-              <input type="text" name="text" class="form-control" id="exampleInputEmail1" placeholder='gimme me a song to summarize'>
-              <!-- <input type="submit" id='submit' name="my-form" value="Push"> -->
-            </form>
           
-        </div id='test'>
-        
-        <span ><iframe align="middle" name="formDestination" font-family='Montserrat'></iframe></span>
+            <form action="." method="POST" target='thisframe'>
+              <input type="text" name="text" class="form-control" placeholder="gimme some text" style="font-family: serif;" />
+              <input type="submit" name="submit" id="submit" value='push'/>
+            </form>
+            <div id='wrap'><iframe  style=" align: center; border-radius: 10px;"name='thisframe'></iframe></div>
       </div>
     </div> <!-- /container -->
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../static/dist/js/vendor/jquery.min.js"></script>
+    <script src="../static/media/dist/js/vendor/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../static/media/dist/js/flat-ui.min.js"></script>
     <script src="../static/media/docs/assets/js/application.js"></script>
-     <script type="text/javascript"> 
-                $("#submit").submit(function(event){event.preventDefault();
-                $.post( url_of_php_file, $("#submit").serialize(), function(data){
-                $("#test").html(data);
-                });
-              </script>
   </body>
       <script type="text/javascript" src="../static/js/typed.js"> </script>
       <script src="js/progressButton.js"></script>
@@ -150,5 +147,4 @@
               });
           });
       </script>
-
 </html>
